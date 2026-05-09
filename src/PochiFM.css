@@ -1,0 +1,196 @@
+.PochiFM main{
+    position: relative;
+    overflow-y: auto;
+    margin: 0;
+}
+.PochiFM .file-list article {
+    display: inline-block;
+    margin: 0.4em;
+    width: 10em;
+    height: 12em;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    border: solid 1px transparent;
+    line-break: anywhere;
+}
+.PochiFM .file-list article:hover, .PochiFM .file-list article.selected {
+    background: rgb(221, 239, 255);
+}
+.PochiFM .file-list article.selected {
+    border: solid 1px navy;
+    border-radius: 4px;
+}
+.PochiFM .file-list .thumbnail{
+    height: 75%;
+    width: 100%;
+    margin: 0;
+    position: relative;
+}
+.PochiFM .file-list .thumbnail img {
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 3px 3px 3px silver;
+    border: solid 1px silver;
+    position: absolute;
+    bottom: 2%;
+    transform: translateX(-50%);
+}
+.PochiFM .file-list .filename {
+    margin: 0;
+    height: 25%;
+    font-size: 80%;
+    line-height: 125%;
+}
+.PochiFM .modal {
+    position: fixed;
+    top :0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+}
+.PochiFM .file-viewer h2{
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font: 100%/140% sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5%;
+    margin: 0;
+}
+.PochiFM .file-viewer .screen {
+    height: 95%;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.PochiFM .file-viewer .screen > *{
+    max-height: 100%;
+    max-width: 95%;
+}
+.PochiFM .file-viewer .next, .PochiFM .file-viewer .prev{
+    font-size: 150%;
+    transform: scaleY(2.5);
+    color: #ddd;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    border-style:none;
+}
+.PochiFM .file-viewer .next {
+    position: absolute;
+    top: 50%;
+    right: 0.25em;
+}
+.PochiFM .file-viewer .prev {
+    position: absolute;
+    top: 50%;
+    left: 0.25em;
+}
+.PochiFM .file-viewer .next:disabled, .PochiFM .file-viewer .prev:disabled{
+    display: none;
+}
+.PochiFM .file-viewer .close {
+    top: 0.15em;
+    left: 0.5em;
+    position: absolute;
+    background: black;
+    color: white;
+    border-radius: 50%;
+    font-size: 150%;
+    border-style: none;
+}
+.modal .content {
+    margin: 10% 5%;
+    position: relative;
+    background: white;
+    padding : 1em;
+    border-radius: 0.5em;
+}
+.modal .content .close {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    font-size: 1.2em;
+    border:solid 1px gray;
+}
+.PochiFM .context-menu {
+    border-radius: 5px;
+    position: fixed;
+    display: none;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 5px 0;
+    list-style: none;
+    margin: 0;
+    min-width: 120px;
+    box-shadow: 5px 5px 5px silver;
+}
+.PochiFM .context-menu li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.PochiFM .context-menu li:hover {
+    background: #eee;
+}
+.PochiFM .context-menu li.disabled {
+    pointer-events: none; 
+    color: silver;
+}
+.PochiFM .progress {
+    background: rgba(255, 255, 255, 0.9);
+    border: solid 1px silver;
+    position: absolute;
+    bottom: 0.5em;
+    right: 0.5em;
+    margin: 0;
+    padding: 0.2em;
+    border-radius: 0.25em;
+}
+.PochiFM .progress dl {
+    margin: 0.25em;
+}
+.PochiFM .progress dl > * {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.PochiFM .progress dt:before {
+    content: "";
+    display: inline-block;
+    width: 0.7em;
+    height: 0.7em;
+    vertical-align: middle;
+    border: 4px solid #E5EDFF;
+    margin: 0.25em;
+    border-radius: 50%;
+}
+.PochiFM .progress dt.loading:before { 
+    border-left-color: #f39c12;
+    animation: spinner1 1.2s linear infinite;
+}
+.PochiFM .progress dt.error:before { 
+    border-color: red;
+    background: red;
+    cursor: pointer;
+}
+@keyframes spinner1{
+    0% {
+        transform:rotate(0)
+    }
+    100%{
+        transform:rotate(360deg)
+    }
+}
+.PochiFM .progress dd {
+    background: green;
+    height: 3px;
+    width: 0%;
+    clear:left;
+}
