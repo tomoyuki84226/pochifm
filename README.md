@@ -9,6 +9,10 @@ Uploading files is as simple as dragging and dropping them from your PC's file v
 
 File information is managed using only one gzip-compressed JSON file, and both the server and browser refer to the same file. There's no need to manage a database, and the load is very low.
 
+Useage: https://www.youtube.com/watch?v=OcY41j1rouw
+
+Sandbox : https://zoyo.info/pochifmsb/
+
 ## Notes
 * Operation is always confirmed using the latest web browser. Older versions may not function as expected.
 * Access information logging is not yet implemented. Please use your web server's logs for security verification.
@@ -34,7 +38,5 @@ This software is licensed under the MIT License and can be used by anyone.
 Kisaragi Fumm
 * https://zoyo.info/
 * https://x.com/kisaragiz84/
-
-Sandbox : https://zoyo.info/pochifmsb/
 
 Copyright (c) 2026 Kisaragi Fumm
