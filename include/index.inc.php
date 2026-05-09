@@ -83,7 +83,7 @@ class IndexController {
             </main>
             <template class="template-file">
                 <article>
-                    <p class="thumbnail"><img></p>
+                    <p class="thumbnail"><img loading="lazy"></p>
                     <p class="filename"></p>
                 </article>
             </template>
