@@ -13,7 +13,7 @@ File information is managed using only one gzip-compressed JSON file, and both t
 * Operation is always confirmed using the latest web browser. Older versions may not function as expected.
 * Access information logging is not yet implemented. Please use your web server's logs for security verification.
 * You can upload multiple files at once. However, there is no upper limit, so uploading too many at once will cause connection errors. Please limit uploads to around 5-10 files at a time.
-* The administrator assumes no responsibility for any losses incurred from using this application.
+* The administrator who installed and operates this application assumes all responsibility for any damages incurred as a result of using it.
 
 ## Installation Instructions
 1. Change config.sample.php to config.php.
