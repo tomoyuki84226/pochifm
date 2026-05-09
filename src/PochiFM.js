@@ -75,6 +75,10 @@ app.fileListNode.addEventListener('mousedown', function(e) {
  */
 app.reloadFileList = async () => {
     const res = await fetch(`${setting.jsonDir}/files.json.gz?${new Date().getTime()}`);
+    if (res.status == 404) {
+        alert('Data file has not been created.');
+        return;
+    }
     if (res.status != 200) {
         alert('http error ' + res.status);
         return;
