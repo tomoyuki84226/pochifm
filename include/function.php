@@ -6,9 +6,10 @@ require_once dirname(__FILE__) . '/common.php';
 
 /**
  * Verify session validity on upload
+ * @param array $config
  */
-function verified () {
-    if (!array_key_exists('username', $_SESSION)) {
+function verified ($config) {
+    if (!isset($_SESSION[$config['app_prefix']]['username'])) {
         http_response_code(403);
         exit;
     }
@@ -17,9 +18,10 @@ function verified () {
 
 /**
  * User account response
+ * @param array $config
  */
-function available() {
-    Response::json(array_key_exists('username', $_SESSION) ? ['username' => $_SESSION['username']] : []);
+function available($config) {
+    Response::json(isset($_SESSION[$config['app_prefix']]['username']) ? ['username' => $_SESSION[$config['app_prefix']]['username']] : []);
 }
 
 /**
@@ -29,7 +31,7 @@ function available() {
 function login($config) {
     foreach($config['accounts'] as $account) {
         if ($_POST['username'] == $account['username']  && $account['password'] == $config['password_encript']($_POST['password'])) {
-            $_SESSION['username'] = $account['username'];
+            $_SESSION[$config['app_prefix']]['username'] = $account['username'];
             Response::json(['username' => $account['username']]);
         }
         http_response_code(404);

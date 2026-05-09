@@ -28,6 +28,12 @@ return [
     // Title of the page to be installed
     'page_title' => 'Pochi File Manager',
 
+    // ポチファイルマネージャで使用するセッションのキー
+    // 同じサイトに複数設置するとき、同じ権限で使用するならば揃え、別々にするなら違う値とします。
+    // Session key used by Pochi File Manager
+    // When installing multiple instances on the same site, use the same value if they are used with the same permissions, and different values ​​if they are used separately.
+    'app_prefix' => 'default',
+
     // ログインアカウントとパスワードの設定(複数指定可能)
     // Login account and password settings (multiple settings are possible)
     'accounts' => [
@@ -40,7 +46,7 @@ return [
 
     // このアプリが作成するディレクトリのパーミッションの指定
     // Specifying permissions for directories created by this app.
-    'permission_mkdir' => '0705',
+    'permission_mkdir' => 0705,
 
     // アップロード禁止拡張子の指定(.phpはスクリプト内で定義済み)
     // Specify file extensions that are prohibited from being uploaded (.php is already defined in the script).

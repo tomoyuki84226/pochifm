@@ -11,8 +11,8 @@ session_start();
 
 $pathInfo = rtrim(getenv('PATH_INFO'), '/');
 
-if ($pathInfo == '/upload') verified() && upload($config);
+if ($pathInfo == '/upload') verified($config) && upload($config);
 if ($pathInfo == '/login') login($config);
-if ($pathInfo == '/available') available();
-if ($pathInfo == '/rename') verified() &&  renameFile($config);
-if ($pathInfo == '/remove') verified() &&  removeFile($config);
+if ($pathInfo == '/available') available($config);
+if ($pathInfo == '/rename') verified($config) &&  renameFile($config);
+if ($pathInfo == '/remove') verified($config) &&  removeFile($config);
