@@ -9,11 +9,11 @@ require_once dirname(__FILE__) . '/common.php';
  * @param array $config
  */
 function verified ($config) {
-    if (!isset($_SESSION[$config['app_prefix']]['username'])) {
-        http_response_code(403);
-        exit;
+    if (isset($_SESSION[$config['app_prefix']]['username']) && count(array_filter($config['accounts'], fn($account) => $account['username'] == $_SESSION[$config['app_prefix']]['username']))) {
+        return true;
     }
-    return true;
+    http_response_code(403);
+    exit;
 }
 
 /**
@@ -21,7 +21,7 @@ function verified ($config) {
  * @param array $config
  */
 function available($config) {
-    Response::json(isset($_SESSION[$config['app_prefix']]['username']) ? ['username' => $_SESSION[$config['app_prefix']]['username']] : []);
+    Response::json(isset($_SESSION[$config['app_prefix']]['username']) && count(array_filter($config['accounts'], fn($account) => $account['username'] == $_SESSION[$config['app_prefix']]['username'])) ? ['username' => $_SESSION[$config['app_prefix']]['username']] : []);
 }
 
 /**
