@@ -3,7 +3,7 @@
 Pochi File Manager is an application that allows anyone to easily install and publish files on a web server running PHP (version 8 or higher). Its operation is as user-friendly as a regular PC. It operates independently without relying on external libraries and can be easily integrated into other applications without worrying about impact.
 
 ## Simply Easy to Use
-The user experience prioritizes ease of use. Even if a file with the same name exists, it is always created as a new file without overwriting confirmation, eliminating the need for cumbersome decisions like overwriting confirmations. Furthermore, the file URL itself does not change even if the file name is changed, so there's no need to worry about renaming files.
+The user experience is also designed with ease of use in mind. Even if a file with the same name already exists, it will always be created as a new file without prompting for overwriting confirmation, eliminating the need for tedious decisions. Furthermore, the file's URL itself does not change even if the file name is changed, so there is no need to worry if you want to rename it.
 
 Uploading files is as simple as dragging and dropping them from your PC's file viewer. You don't need to worry about whether you're currently logged in; an authentication form only appears when you attempt to perform write operations such as uploading. Once authentication is complete, the operation is performed immediately. Since there is no login button by default, it doesn't detract from the appearance.
 
