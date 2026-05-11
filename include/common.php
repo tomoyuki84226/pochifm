@@ -58,10 +58,10 @@ function encodeBase62($binary) {
 /**
  * Create a directory that does not exist
  * @param string $path
- * @param string $mode 
+ * @param int $mode 
  * @return bool
  */
-function safeMkdir($path, $mode = '0705') {
+function safeMkdir($path, $mode = 0705) {
     if (file_exists($path)) {
         return true;
     }
