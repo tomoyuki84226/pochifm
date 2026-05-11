@@ -9,15 +9,17 @@ app.progress = app.querySelector('.progress');
 app.fileList = [];
 app.waitAction = () => {};
 
+
 /**
- * Check DOM element is inside
- * @setting {element} node 
+ * Check DOM element is class
+ * @param {element} node 
+ * @param {string} className
  * @returns bool
  */
-app.isInsideModal = function (node) { 
+app.isInsideClass = function(node, className) {
     if (!node) return false;
-    if (node.classList?.contains('modal')) return true;
-    return app.isInsideModal(node.parentNode);
+    if (node.classList?.contains(className)) return true;
+    return app.isInsideClass(node.parentNode, className);
 }
 
 
@@ -310,16 +312,6 @@ app.getHasFileDataNode = function(node) {
     return app.getHasFileDataNode(node.parentNode);
 };
 
-/**
- * Pointed event is inside contect menu
- * @setting {element} node 
- * @returns element
- */
-app.isInsideContextMenu = function(node) {
-    if (!node) return false;
-    if (node.classList?.contains('context-menu')) return true;
-    return app.isInsideContextMenu(node.parentNode);
-}
 
 /**
  * Close context menu on click outside
@@ -327,7 +319,7 @@ app.isInsideContextMenu = function(node) {
 app.addEventListener('click', (e) => {
     const target = e.target;
     if (!app.contextMenu.contains(target)) app.contextMenu.style.display = 'none';
-    if (!(app.getHasFileDataNode(target) || app.isInsideContextMenu(target) || app.isInsideModal(target))) {
+    if (!(app.getHasFileDataNode(target) || app.isInsideClass(target, 'context-menu') || app.isInsideClass(target, 'mocal'))) {
         app.querySelector('main').style.overflow = 'auto';
     }
 });
@@ -408,7 +400,7 @@ if (setting.readOnly) renameMenu.style.display = 'none';
 */ 
 window.addEventListener('click', function(e) {
     if (e.ctrlKey || e.metaKey || e.shiftKey) return;
-    if (app.isInsideContextMenu(e.target)) return;
+    if (app.isInsideClass(e.target, 'context-menu')) return;
     app.clearSelected();
 });
 
