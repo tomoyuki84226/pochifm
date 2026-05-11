@@ -42,7 +42,7 @@ class IndexController {
             $filename = "{$this->targetFile['name']}.{$this->targetFile['ext']}";
             $basepath = htmlspecialchars((empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']));
             $url = htmlspecialchars($basepath . "?id={$this->targetFile['id']}");
-            $thumbnail = htmlspecialchars($basepath . $this->config['thumb_dir'] . "/{$this->targetFile['dir']}/{$this->targetFile['id']}.{$this->targetFile['ext']}");
+            $thumbnail = htmlspecialchars($basepath . $this->config['thumb_dir'] . "/{$this->targetFile['dir']}/{$this->targetFile['id']}.jpg");
             $description = htmlspecialchars("{$filename}; type: {$this->targetFile['type']}; size: " . formatBytes($this->targetFile['size']));
             $filename = htmlspecialchars($filename);
         ?>
