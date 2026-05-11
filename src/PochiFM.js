@@ -11,7 +11,7 @@ app.waitAction = () => {};
 
 
 /**
- * Check DOM element is class
+ * Check DOM element is inside class
  * @param {element} node 
  * @param {string} className
  * @returns bool
