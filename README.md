@@ -1,4 +1,4 @@
-<p><img src="using.gif" width="1280" style="max-width:100%"></p>
+<p><img src="https://github.com/tomoyuki84226/pochifm/raw/main/using.gif" width="1280" style="max-width:100%"></p>
 
 # Pochi File Manager Instructions
 ## Overview
