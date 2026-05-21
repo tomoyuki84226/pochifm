@@ -482,7 +482,7 @@ if (!setting.readOnly) app.querySelector('main').addEventListener("drop", app.dr
 app.progress.create = function(file) {
     app.progress.style.display = 'block';
     const dl = app.querySelector('.progress-item').content.cloneNode('true').querySelector('dl');
-    dl.data = {filname : file.name};
+    dl.data = {filename : file.name};
     dl.title = `type: ${file.type}\nsize: ${app.formatBytes(file.size)}`;
     dl.querySelector('dt').textContent = file.name;
     dl.updateLoading = function(ratio) {
