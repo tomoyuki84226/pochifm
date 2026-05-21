@@ -10,8 +10,8 @@
     <?php $index->writeMeta()?>
     <meta name="twitter:site" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    <link href="src/PochiFM.css?20260509" rel="stylesheet">
-    <script src="src/PochiFM.js?20260509" defer></script>
+    <link href="src/PochiFM.css?20260521" rel="stylesheet">
+    <script src="src/PochiFM.js?20260521" defer></script>
     <style type="text/css">
         h1 {
             margin: 0;
