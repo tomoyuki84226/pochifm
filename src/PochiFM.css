@@ -36,6 +36,12 @@
     bottom: 2%;
     transform: translateX(-50%);
 }
+.Pochifm .file-list .video img{
+    border-color: #777;
+    border-style: solid dashed solid dashed;
+    border-width: 1pt 5pt;
+    border-radius: 0.5pt;
+}
 .PochiFM .file-list .filename {
     margin: 0;
     height: 25%;

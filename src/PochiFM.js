@@ -105,6 +105,7 @@ app.fileListNode.create = (file) => {
     node.querySelector('.filename').appendChild(document.createTextNode(file.name));
     const article = node.querySelector('article');
     article.title = app.createAttributeTitle(file);
+    article.classList.add(file.type.split('/')[0]);
     article.addEventListener('click', app.clickFileHandler);
     article.data = { ...file };
     return node;
@@ -478,11 +479,12 @@ if (!setting.readOnly) app.querySelector('main').addEventListener("drop", app.dr
 /**
  * Create new upload
  */
-app.progress.create = function(filename) {
+app.progress.create = function(file) {
     app.progress.style.display = 'block';
     const dl = app.querySelector('.progress-item').content.cloneNode('true').querySelector('dl');
-    dl.data = {filename};
-    dl.querySelector('dt').textContent = filename;
+    dl.data = {filname : file.name};
+    dl.title = `type: ${file.type}\nsize: ${app.formatBytes(file.size)}`;
+    dl.querySelector('dt').textContent = file.name;
     dl.updateLoading = function(ratio) {
         const bar = dl.querySelector('dd');
         bar.style.width = ratio * 100 + '%';
@@ -551,9 +553,9 @@ window.addEventListener('beforeunload', (event) => {
  */
 app.upload = async (file) => {
 
-    if (!file.type.match(/image|video/)) return;
+    if (!file.type.match(/image|video\/(matroska|mov|mp4|webm)/)) return;
 
-    app.progress.create(file.name);
+    app.progress.create(file);
 
     const thumbnail = await app.createThumbnail(file);
  
