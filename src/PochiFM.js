@@ -190,6 +190,12 @@ app.createViewObject = function(file) {
         img.setAttribute('src', `${setting.orgDir}/${file.dir}/${file.id}.${file.ext}`);
         return img;
     }
+    if (file.type.match(/^video/)) {
+        const video = document.createElement('video');
+        video.setAttribute('src', `${setting.orgDir}/${file.dir}/${file.id}.${file.ext}`);
+        video.controls = true; 
+        return video;
+    }
     const object = document.createElement('object');
     object.setAttribute('type', file.type);
     object.setAttribute('data', `${setting.orgDir}/${file.dir}/${file.id}.${file.ext}`);
@@ -545,7 +551,7 @@ window.addEventListener('beforeunload', (event) => {
  */
 app.upload = async (file) => {
 
-    if (!file.type.match(/image/)) return;
+    if (!file.type.match(/image|video/)) return;
 
     app.progress.create(file.name);
 
@@ -569,17 +575,13 @@ app.upload = async (file) => {
             const progress = app.progress.getNodeByFileName(fileName);
             if (xhr.status != 200) {
                 progress.setStatus(xhr.status, xhr.response);
-                resolve();
-                return;
-            }
-            if (!xhr.response.success) {
+            } else if (xhr.response.success) {
+                app.progress.remove(fileName);
+                app.fileList.unshift(xhr.response.new);
+                app.fileListNode.add(xhr.response.new)
+            } else {
                 progress.setStatus(xhr.status, xhr.response);
-                resolve();
-                return;
             }
-            app.progress.remove(fileName);
-            app.fileList.unshift(xhr.response.new);
-            app.fileListNode.add(xhr.response.new)
             resolve();
         });
 
@@ -594,52 +596,82 @@ app.upload = async (file) => {
 }
 
 /**
- * Create thumbnail from image (using canvas)
+ * Create thumbnail from image or video (using canvas)
  * @setting {*} file 
  * @setting {int} maxSize width or height
  * @returns Promise
  */
 app.createThumbnail = (file, maxSize = 300) => {
+
+    const getThumbSize = (width, height, maxSize) => {
+        if (width > maxSize || height > maxSize) {
+            if (width > height) {
+                height = Math.round(height * (maxSize / width));
+                width = maxSize;
+            } else {
+                width = Math.round(width * (maxSize / height));
+                height = maxSize;
+            }
+        }
+        return [width, height];
+    }
+
+    const getThumbnail = (img, width, height) => {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+
+        return canvas;
+    }
+
     return new Promise((resolve, reject) => {
 
-        const img = new Image();
+        const type = file.type.match(/video/) ? 'video' : 'image';
         const url = URL.createObjectURL(file);
 
-        img.onload = () => {
-            let width = img.width;
-            let height = img.height;
-
-            if (width > maxSize || height > maxSize) {
-                if (width > height) {
-                    height = Math.round(height * (maxSize / width));
-                    width = maxSize;
-                } else {
-                    width = Math.round(width * (maxSize / height));
-                    height = maxSize;
-                }
+        if (type == 'video') {
+            const video = document.createElement('video');
+            video.muted = true;
+            video.playsInline = true;
+            video.onloadedmetadata = () => {
+                video.currentTime = 0.1; 
             }
+            video.onseeked = () => {
+                const [width, height] = getThumbSize(video.videoWidth, video.videoHeight, maxSize);
 
-            const canvas = document.createElement("canvas");
-            canvas.width = width;
-            canvas.height = height;
+                getThumbnail(video, width, height).toBlob(
+                    (blob) => {
+                        URL.revokeObjectURL(url);
+                        resolve(blob);
+                    },
+                    "image/jpeg",
+                    0.8); // JPEG quality
+            }
+            video.src = url;
+        } else {
+            const img = new Image();
 
-            const ctx = canvas.getContext("2d");
+            img.onload = () => {
+                const [width, height] = getThumbSize(img.width, img.height, maxSize);
 
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, width, height);
-            ctx.drawImage(img, 0, 0, width, height);
-            ctx.drawImage(img, 0, 0, width, height);
-
-            canvas.toBlob(
-                (blob) => {
-                    URL.revokeObjectURL(url);
-                    resolve(blob);
-                },
-                "image/jpeg",
-                0.8); // JPEG quality
-        };
-        img.onerror = reject;
-        img.src = url;
+                getThumbnail(img, width, height).toBlob(
+                    (blob) => {
+                        URL.revokeObjectURL(url);
+                        resolve(blob);
+                    },
+                    "image/jpeg",
+                    0.8); // JPEG quality
+            };
+            img.onerror = reject;
+            img.src = url; 
+        }
     });
 }
 
