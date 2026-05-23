@@ -349,7 +349,7 @@ app.getHasFileDataNode = function(node) {
 window.addEventListener('click', (e) => {
     const target = e.target;
     if (!app.contextMenu.contains(target)) app.contextMenu.style.display = 'none';
-    if (!(app.getHasFileDataNode(target) || app.isInsideClass(target, 'context-menu') || app.isInsideClass(target, 'mocal'))) {
+    if (!(app.getHasFileDataNode(target) || app.isInsideClass(target, 'context-menu') || app.isInsideClass(target, 'modal'))) {
         app.querySelector('main').style.overflow = 'auto';
     }
 });
