@@ -346,7 +346,7 @@ app.getHasFileDataNode = function(node) {
 /**
  * Close context menu on click outside
  */ 
-app.addEventListener('click', (e) => {
+window.addEventListener('click', (e) => {
     const target = e.target;
     if (!app.contextMenu.contains(target)) app.contextMenu.style.display = 'none';
     if (!(app.getHasFileDataNode(target) || app.isInsideClass(target, 'context-menu') || app.isInsideClass(target, 'mocal'))) {
