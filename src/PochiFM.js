@@ -97,8 +97,18 @@ app.reloadFileList = async () => {
  */
 app.fileListNode.create = (file) => {
     const node = app.querySelector(".template-file").content.cloneNode(true);
-    const img = node.querySelector('.thumbnail img');
-    img.setAttribute('src', `${setting.thumbDir}/${file.dir}/${file.id}.jpg`);
+    const img = node.querySelector('.icon object');
+    if (file.thumb) {
+        node.querySelector('.icon').classList.add('thumbnail'); 
+        img.setAttribute('data', `${setting.thumbDir}/${file.dir}/${file.id}.jpg`);
+        img.setAttribute('type', 'image/jpeg')
+    } else {
+        img.setAttribute('data', 'src/file.svg');
+        img.setAttribute('type', 'image/svg+xml');
+        img.addEventListener('load', () => {
+            img.contentDocument.getElementById('file-type').textContent = file.ext;
+        });
+    }
     img.addEventListener('dragstart', function(e) {
       e.preventDefault();
     });
@@ -191,16 +201,27 @@ app.createViewObject = function(file) {
         img.setAttribute('src', `${setting.orgDir}/${file.dir}/${file.id}.${file.ext}`);
         return img;
     }
-    if (file.type.match(/^video/)) {
+    if (file.type.match(/^video\/(matroska|mov|mp4|webm)/)) {
         const video = document.createElement('video');
         video.setAttribute('src', `${setting.orgDir}/${file.dir}/${file.id}.${file.ext}`);
         video.controls = true; 
         return video;
     }
-    const object = document.createElement('object');
-    object.setAttribute('type', file.type);
-    object.setAttribute('data', `${setting.orgDir}/${file.dir}/${file.id}.${file.ext}`);
-    return object;
+
+    const span = document.createElement('span');
+    const object = span.appendChild(document.createElement('object'));
+    object.setAttribute('type', 'image/svg+xml');
+    object.setAttribute('data', 'src/file.svg');
+    object.addEventListener('load', () => {
+        object.contentDocument.getElementById('file-type').textContent = file.ext;
+    });
+    span.addEventListener('click', () => {
+        const a = document.createElement('a');
+        a.href = `${setting.orgDir}/${file.dir}/${file.id}.${file.ext}`;
+        a.download = `${file.name}.${file.ext}`;
+        a.click();
+    });
+    return span;
 }
 
 /**
@@ -553,8 +574,6 @@ window.addEventListener('beforeunload', (event) => {
  */
 app.upload = async (file) => {
 
-    if (!file.type.match(/image|video\/(matroska|mov|mp4|webm)/)) return;
-
     app.progress.create(file);
 
     const thumbnail = await app.createThumbnail(file);
@@ -564,7 +583,7 @@ app.upload = async (file) => {
         const formData = new FormData();
         const xhr = new XMLHttpRequest();
         formData.append('file', file);
-        formData.append("thumbnail", thumbnail, "thumb.jpg");
+        if (thumbnail) formData.append("thumbnail", thumbnail, "thumb.jpg");
 
         xhr.upload.addEventListener("progress", e => {
             if (e.lengthComputable) {
@@ -604,6 +623,8 @@ app.upload = async (file) => {
  * @returns Promise
  */
 app.createThumbnail = (file, maxSize = 300) => {
+
+    if (!file.type.match(/image|video\/(matroska|mov|mp4|webm)/)) return null;
 
     const getThumbSize = (width, height, maxSize) => {
         if (width > maxSize || height > maxSize) {

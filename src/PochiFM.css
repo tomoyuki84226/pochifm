@@ -3,6 +3,9 @@
     overflow-y: auto;
     margin: 0;
 }
+.PochiFM object {
+    pointer-events: none;
+}
 .PochiFM .file-list article {
     display: inline-block;
     margin: 0.4em;
@@ -21,22 +24,24 @@
     border: solid 1px navy;
     border-radius: 4px;
 }
-.PochiFM .file-list .thumbnail{
+.PochiFM .file-list .icon{
     height: 75%;
     width: 100%;
     margin: 0;
     position: relative;
 }
-.PochiFM .file-list .thumbnail img {
+.PochiFM .file-list .icon object {
     max-width: 90%;
     max-height: 90%;
-    box-shadow: 3px 3px 3px silver;
-    border: solid 1px silver;
     position: absolute;
     bottom: 2%;
     transform: translateX(-50%);
 }
-.Pochifm .file-list .video img{
+.PochiFM .file-list .thumbnail object{
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+    border: solid 1px silver;
+}
+.Pochifm .file-list .video .thumbnail object{
     border-color: #777;
     border-style: solid dashed solid dashed;
     border-width: 1pt 5pt;

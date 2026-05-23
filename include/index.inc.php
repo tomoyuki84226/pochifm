@@ -77,13 +77,13 @@ class IndexController {
         ];
         ?>
         <div id="<?=$id?>" class="PochiFM">
-            <input type="file" id="file-input" multiple accept="image/*" style="display:none" />
+            <input type="file" id="file-input" multiple style="display:none" />
             <main>
                 <section class="file-list"></section>
             </main>
             <template class="template-file">
                 <article>
-                    <p class="thumbnail"><img loading="lazy"></p>
+                    <p class="icon"><object loading="lazy"></object></p>
                     <p class="filename"></p>
                 </article>
             </template>

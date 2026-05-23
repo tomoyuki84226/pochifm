@@ -52,7 +52,7 @@ function upload ($config) {
             'input' => $_FILES,
         ]);
     }
-    if (!array_key_exists('file', $_FILES) || !array_key_exists('thumbnail', $_FILES)) {
+    if (!array_key_exists('file', $_FILES)) {
         http_response_code(400);
         Response::json([
             'success' => false,
@@ -60,7 +60,8 @@ function upload ($config) {
             'input' => $_FILES,
         ]);
     }
-    if (!preg_match('/image\/(jpe?g|png|webp|svg)/', $_FILES['thumbnail']['type'])) {
+    $thumbnail = array_key_exists('thumbnail', $_FILES);
+    if ($thumbnail && !preg_match('/image\/(jpe?g|png|webp|svg)/', $_FILES['thumbnail']['type'])) {
         http_response_code(400);
         Response::json([
             'success' => false,
@@ -91,7 +92,7 @@ function upload ($config) {
     }
     $orgpath = $thumbdir . "/{$fileid}.jpg";
     $thumbpath = $orgdir . "/{$fileid}.{$ext}";
-    move_uploaded_file($_FILES['thumbnail']['tmp_name'], $orgpath);
+    if ($thumbnail) move_uploaded_file($_FILES['thumbnail']['tmp_name'], $orgpath);
     move_uploaded_file($_FILES['file']['tmp_name'], $thumbpath);
 
     $jsonFile = new JsonRewirte("{$config['json_dir']}/files.json", true);
@@ -116,6 +117,9 @@ function upload ($config) {
                 'size' => $_FILES['file']['size'],
                 'time' => time()
             ];
+            if ($thumbnail) {
+                $newData['thumb'] = true;
+            }
             array_unshift($json, $newData);
             $jsonFile->save($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             Response::json([
