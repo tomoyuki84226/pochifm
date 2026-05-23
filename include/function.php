@@ -233,3 +233,20 @@ function removeFile ($config) {
         ]);
     }
 }
+
+/**
+ * @param array $config
+ * @param string $name
+ * @param mixed $value
+ */
+function putlog($config, $name, $value) {
+    if (!array_key_exists('log_dir', $config)) return;
+    static $fp = [];
+    $datetime = date('Y-m-d H:i:s');
+    $date = substr($datetime, 0, 10);
+    $path = "{$config['log_dir']}/{$name}_{$date}.log";
+    if (is_array($value) || is_object($value)) {
+        $value = var_export($value, true);
+    }
+    fputs($fp[$name] ?? fopen($path, 'a'), "[$datetime] {$value}");
+}
