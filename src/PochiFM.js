@@ -187,6 +187,7 @@ app.fileOpen = function(file, index, pushState = true) {
     } else {
         next.setAttribute('disabled', 'disabled');
     }
+    if (object.nodeName == 'VIDEO') object.play();
     document.body.style.overflow = 'hidden';
 }
 
@@ -205,6 +206,7 @@ app.createViewObject = function(file) {
         const video = document.createElement('video');
         video.setAttribute('src', `${setting.orgDir}/${file.dir}/${file.id}.${file.ext}`);
         video.controls = true; 
+        video.playsInline = true;
         return video;
     }
 
