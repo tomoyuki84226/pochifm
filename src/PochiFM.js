@@ -182,7 +182,7 @@ app.fileOpen = function(file, index, pushState = true) {
     const viewer = app.querySelector(".file-viewer");
     viewer.data = { ...file };
     viewer.style.display = 'block';
-    viewer.querySelector('h2').textContent = file.name;
+    viewer.querySelector('h2').textContent = app.getNarrowTitle(file.name);
     document.title = `${file.name} - ${setting.pageTitle}`;
     const object = app.createViewObject(file);
     const screen = viewer.querySelector('.screen');
@@ -205,6 +205,27 @@ app.fileOpen = function(file, index, pushState = true) {
     }
     document.body.style.overflow = 'hidden';
 }
+
+
+/**
+ * Shorten the title
+ * @param {string} title 
+ * @returns 
+ */
+app.getNarrowTitle = (title) => {
+    const widthEm = window.innerWidth / parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const maxLength = widthEm - 9;
+    if (title.length > maxLength) {
+        return title.substr(0, maxLength) + '...';
+    }
+    return title;
+}
+
+window.addEventListener('resize', () => {
+    const viewer = app.querySelector(".file-viewer");
+    viewer.querySelector('h2').textContent = app.getNarrowTitle(viewer.data?.name);
+});
+
 
 /**
  * Create File Object
