@@ -147,12 +147,28 @@ app.clickFileHandler = function(e) {
                 articles[i].classList.add('selected');
             }
         }
+        window.addEventListener('keydown', app.keydownEventOnSelected);
     } else if(this.classList?.contains('selected')){
         this.classList.remove('selected');
     } else {
         this.classList.add('selected');
-    }
+        window.addEventListener('keydown', app.keydownEventOnSelected);
+   }
 };
+
+/**
+ * Key down event on selected
+ * @param {*} event
+ */
+app.keydownEventOnSelected = function(event) {
+    if (!app.fileListNode.querySelector('.selected')) {
+        window.removeEventListener('keydown', app.keydownEventOnSelected);
+        return;
+    }
+    if (event.key === 'Delete'){
+        app.remove();
+    }
+}
 
 
 /**
