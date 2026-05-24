@@ -344,6 +344,10 @@ app.contxtMenuHandler = function(e) {
     app.contextMenu.style.left = x + 'px';
     app.contextMenu.style.top = y + 'px';
     app.contextMenu.style.display = 'block';
+
+    window.addEventListener('keydown', app.contectMenuKeydownHandler);
+    window.addEventListener('click', app.clickOutsideMenuHandler);
+    window.addEventListener('resize', app.closeContextMenu);
 }
 
 /*
@@ -356,22 +360,28 @@ app.getHasFileDataNode = function(node) {
     return app.getHasFileDataNode(node.parentNode);
 };
 
-
 /**
- * Close context menu on click outside
- */ 
-window.addEventListener('click', (e) => {
-    const target = e.target;
-    if (!app.contextMenu.contains(target)) app.contextMenu.style.display = 'none';
-    if (!(app.getHasFileDataNode(target) || app.isInsideClass(target, 'context-menu') || app.isInsideClass(target, 'modal'))) {
-        app.querySelector('main').style.overflow = 'auto';
-    }
-});
-
-window.addEventListener('resize', () => {
+ * Close context menu
+ */
+app.closeContextMenu = () => {
     app.contextMenu.style.display = 'none';
     app.querySelector('main').style.overflow = 'auto';
-});
+    window.removeEventListener('keydown', app.contectMenuKeydownHandler);
+    window.removeEventListener('click', app.clickOutsideMenuHandler);
+    window.removeEventListener('resize', app.closeContextMenu)
+}
+
+app.clickOutsideMenuHandler = (e) => {
+    if (!app.isInsideClass(e.target, 'context-menu')){
+        app.closeContextMenu();
+    }
+}
+
+app.contectMenuKeydownHandler = function(e) {
+    if(e.key == 'Escape') {
+        app.closeContextMenu();
+    }
+}
 
 /**
  * All clear to selected item
@@ -584,7 +594,7 @@ window.addEventListener('beforeunload', (event) => {
 
 
 /**
- * Fie Upload to api
+ * File upload to api
  * @setting {file} file 
  * @returns Promise
  */
@@ -725,6 +735,7 @@ app.viewAuthenticate = function () {
     app.querySelector('.authenticate').style.display = 'block';
     document.body.style.overflow = 'hidden';
     app.querySelector('.authenticate input').focus();
+    window.addEventListener('keydown', app.authenticateModalKeydownHandler);
 }
 
 /**
@@ -780,6 +791,7 @@ app.closeAuthenticate = function() {
     app.querySelector('[name="password"]').value = '';
     app.querySelector('.authenticate').style.display = 'none';
     document.body.style.overflow = 'auto';
+    window.removeEventListener('keydown', app.authenticateModalKeydownHandler);
 }
 
 /**
@@ -788,6 +800,10 @@ app.closeAuthenticate = function() {
  */
 app.authenticateModalCloseHandele = function(e) {
     if (e.target.classList.contains('modal')) app.closeAuthenticate();
+}
+
+app.authenticateModalKeydownHandler = function(e) {
+    if(e.key == 'Escape') app.closeAuthenticate();
 }
 
 /* set default event */
