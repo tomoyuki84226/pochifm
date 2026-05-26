@@ -35,7 +35,7 @@ If you're curious, try it out in the sandbox! : https://zoyo.info/pochifmsb/
 ## Future Developments
 The data structure of the specifications is stable and is intended for continued use. The internal implementation may change significantly due to improvements.
 
-Currently, only images and videos can be uploaded, and editing is only possible on PCs. Future development well as the addition of more convenient features. Please look forward to it.
+You can upload files in any format. Displaying them effectively is currently an issue. Also, editing is only PC. I plan to add more convenient features in future development. Please look forward to it.
 
 ## Installation Instructions
 1. Change config.sample.php to config.php.
