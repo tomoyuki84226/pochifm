@@ -31,9 +31,7 @@ app.fileListNode = app.querySelector(".file-list");
  * @param {array} filelist 
  */
 app.fileListNode.reset = function(filelist) {
-    while(app.fileListNode.firstChild) {
-        app.fileListNode.removeChild(app.fileListNode.firstChild)
-    }
+    app.fileListNode.replaceChildren();
     for (const file_info of filelist) {
         app.fileListNode.appendChild(app.fileListNode.create(file_info));
     }
@@ -323,7 +321,7 @@ window.addEventListener("drop", (e) => {
 app.contextMenu = app.querySelector('.context-menu');
 
 /**
- * Contect menu open
+ * Context menu open
  * @setting {event} e 
  */
 app.contxtMenuHandler = function(e) {
@@ -343,8 +341,10 @@ app.contxtMenuHandler = function(e) {
     const selected = app.fileListNode.querySelectorAll('.selected');
     if (selected.length > 1) {
         li[0].classList.add('disabled');
+        li[2].classList.add('disabled');
     } else {
         li[0].classList.remove('disabled');
+        li[2].classList.remove('disabled');
     }
 
     const menuWidth = app.contextMenu.offsetWidth;
@@ -428,6 +428,23 @@ app.downloadSelectd = function () {
 }
 
 app.contextMenu.getElementsByTagName('li')[1].addEventListener('click', app.downloadSelectd);
+
+
+/*
+ * Set Share URL fo Clipboard 
+*/
+app.getShare = async function () {
+    const item = app.fileListNode.querySelector('.selected');
+    const url = `${setting.orgDir}/?id=${item.data.id}`;
+    try {
+        await navigator.clipboard.writeText(url);
+        alert("クリップボードにコピーしました！");
+    } catch (err) {
+        alert("クリップボードに書き込めませんでした");
+    }
+}
+
+app.contextMenu.getElementsByTagName('li')[2].addEventListener('click', app.getShare);
 
 /**
  * File rename
@@ -521,7 +538,7 @@ app.remove = function() {
     app.contextMenu.style.display = 'none';
 }
 
-const removeMenu = app.contextMenu.getElementsByTagName('li')[2];
+const removeMenu = app.contextMenu.getElementsByTagName('li')[3];
 removeMenu.addEventListener('click', app.remove);
 if (setting.readOnly) removeMenu.style.display = 'none';
 

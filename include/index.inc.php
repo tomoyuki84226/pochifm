@@ -113,6 +113,7 @@ class IndexController {
             <ul class="context-menu">
                 <li>Reame</li>
                 <li>Download</li>
+                <li>Share URL</li>
                 <li>Remove</li>
             </ul>
         </div>
