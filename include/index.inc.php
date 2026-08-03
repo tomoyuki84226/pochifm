@@ -60,6 +60,10 @@ class IndexController {
         <?php } else {?>
             <title><?=$this->config['page_title']?></title>
         <?php }
+        ?>
+            <link href="src/PochiFM.css?20260804" rel="stylesheet">
+            <script src="src/PochiFM.js?20260804" defer></script>
+        <?php
     }
 
     // このメソッドをページ上に挿入した上で、PochiFM.jsとPochiFM.cssを読み込ませるとアプリケーションを起動できる。
