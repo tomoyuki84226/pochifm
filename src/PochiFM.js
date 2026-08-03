@@ -438,10 +438,10 @@ app.getShare = async function () {
     const url = `${setting.orgDir}/?id=${item.data.id}`;
     try {
         await navigator.clipboard.writeText(url);
-        alert("クリップボードにコピーしました！");
     } catch (err) {
-        alert("クリップボードに書き込めませんでした");
+        alert("Copy failed.");
     }
+    app.closeContextMenu();
 }
 
 app.contextMenu.getElementsByTagName('li')[2].addEventListener('click', app.getShare);
