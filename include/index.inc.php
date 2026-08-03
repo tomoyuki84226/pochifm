@@ -79,6 +79,9 @@ class IndexController {
         <div id="<?=$id?>" class="PochiFM">
             <input type="file" id="file-input" multiple style="display:none" />
             <main>
+                <header>
+                    <button name="multiupload">upload</button>
+                </header>
                 <section class="file-list"></section>
             </main>
             <template class="template-file">
@@ -99,11 +102,11 @@ class IndexController {
                 <section class="screen"></section>
                 <button class="prev">&lt;</button>
                 <button class="next">&gt;</button>
-                <button class="close">✕</button>
+                <button name="close">✕</button>
             </div>
             <div class="modal authenticate" style="display:none">
                 <section class="content">
-                    <button class="close">✕</button>
+                    <button name="close">✕</button>
                     <h2>Pochi File Manager Login</h2>
                     <p><label>Username <input type="text" name="username" value=""></label></p>
                     <p><label>Password <input type="password" name="password" value=""></label></p>
@@ -116,6 +119,19 @@ class IndexController {
                 <li>Share URL</li>
                 <li>Remove</li>
             </ul>
+            <div class="modal multiupload" style="display:none">
+                <section class="content">
+                    <button name="close">✕</button>
+                    <h2>Upload File</h2>
+                    <div class="droparea">
+                        <input type="file" name="thumbnail" accept="image/*">
+                        <input type="file" name="main">
+                        <dl class="main"><dt>Upload File</dt><dd></dd></dl>
+                        <dl class="thumbnail"><dt>Thumbnail image</dt><dd></dd></dl>
+                    </div>
+                    <button type="button" name="submit" disabled>upload</button>
+                </section>
+            </div>
         </div>
         <script>
              document.addEventListener('DOMContentLoaded', function() {

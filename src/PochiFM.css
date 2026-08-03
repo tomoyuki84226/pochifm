@@ -3,6 +3,10 @@
     overflow-y: auto;
     margin: 0;
 }
+.PochiFM main header {
+    text-align: right;
+    margin: 0.25em;
+}
 .PochiFM object {
     pointer-events: none;
 }
@@ -117,7 +121,7 @@
 .PochiFM .file-viewer .next:disabled, .PochiFM .file-viewer .prev:disabled{
     display: none;
 }
-.PochiFM .file-viewer .close {
+.PochiFM .file-viewer button[name="close"] {
     top: 0.15em;
     left: 0.5em;
     position: absolute;
@@ -128,7 +132,7 @@
     border-style: none;
 }
 @media screen and (max-height:700px) {
-    .PochiFM .file-viewer .close {
+    .PochiFM .file-viewer button[name="close"] {
         font-size: 100%;
     }
 }
@@ -138,8 +142,10 @@
     background: white;
     padding : 1em;
     border-radius: 0.5em;
+    max-height: 85%;
+    overflow:auto;
 }
-.modal .content .close {
+.modal .content button[name="close"] {
     position: absolute;
     top: 0.5em;
     right: 0.5em;
@@ -209,6 +215,39 @@
     border-color: red;
     background: red;
     cursor: pointer;
+}
+.PochiFM .multiupload {
+    
+}
+.PochiFM .multiupload .droparea {
+    text-align: center;
+}
+.PochiFM .multiupload .droparea dl{
+    cursor: pointer;
+    height: 17em;
+    width: 15em;
+    max-width: 95%;
+    border: solid 1px silver; 
+    border-radius: 0.3em;
+    display: inline-block;
+    margin: 0.5em 1em;
+    overflow: auto;
+}
+.PochiFM .multiupload .droparea dd {
+    height: calc(100% - 2em);
+    margin:0;
+}
+.PochiFM .multiupload .thumbnail img {
+    max-width: 95%;
+    max-height: 95%;
+}
+.PochiFM .multiupload .main dd {
+    white-space: pre-wrap;
+    text-align: left;
+    padding: 0 0.5em;
+}
+.PochiFM .multiupload .droparea input {
+    display:none;
 }
 @keyframes spinner1{
     0% {

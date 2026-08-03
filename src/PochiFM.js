@@ -289,7 +289,7 @@ app.querySelector('.prev').addEventListener('click', function(){
     app.fileOpen(app.fileList[index], index);
 });
 
-app.querySelector('.close').addEventListener('click', function() {
+app.querySelector('button[name="close"]').addEventListener('click', function() {
     app.fileClose();
 });
 
@@ -553,7 +553,8 @@ app.dropHandler =  function (e) {
     app.transfer = e.dataTransfer.files;
     if (app.transfer.length === 0) return;
     const action = () => {
-        for (const file of app.transfer) app.upload(file);
+        for (const file of app.transfer)
+            app.createThumbnail(file).then((thumb) => app.upload(file, thumb));
     }
     app.execute(action);
 }
@@ -634,13 +635,12 @@ window.addEventListener('beforeunload', (event) => {
 /**
  * File upload to api
  * @setting {file} file 
+ * @setting {blob} thumbnail
  * @returns Promise
  */
-app.upload = async (file) => {
+app.upload = async (file, thumbnail) => {
 
     app.progress.create(file);
-
-    const thumbnail = await app.createThumbnail(file);
  
     return new Promise((resolve, reject) => {
         const fileName = file.name;
@@ -679,6 +679,115 @@ app.upload = async (file) => {
         xhr.send(formData);
     });
 }
+
+////////////// File Upload Modal section
+
+app.multiupload = app.querySelector('.multiupload');
+
+/**
+ * Setting thumnail for mordal
+ * @param {file} file 
+ * @returns void
+ */
+app.setThumbnail = async function(file) {
+    app.multiupload.thumbnail = await app.createThumbnail(file);
+    if (!app.multiupload.thumbnail) return;
+    const thumbnailUrl = URL.createObjectURL(app.multiupload.thumbnail);
+    const img = document.createElement('img');
+    img.src = thumbnailUrl;
+    const parent = app.multiupload.querySelector('.thumbnail dd');
+    if (parent.firstChild) URL.revokeObjectURL(parent.firstChild.src);
+    parent.replaceChildren(img);
+}
+
+app.multiupload.querySelector('.thumbnail').addEventListener("drop", function(e) {
+    const file = e.dataTransfer.files;
+    if (file.length === 0) return;
+    app.setThumbnail(file[0]);
+});
+
+/**
+ * Setting thumbnail for moral onchange
+ * @param {event} e 
+ */
+app.changeThumbnailHandler = function(e) {
+    app.setThumbnail(e.target.files[0]);
+}
+app.multiupload.querySelector('.thumbnail').addEventListener("click", () => {
+    const input = app.multiupload.querySelector('[name="thumbnail"]');
+    input.click();
+    input.addEventListener('change', app.changeThumbnailHandler);
+});
+
+/**
+ * Setting main upload file for modal
+ * @param {file} file 
+ */
+app.setMain = async function(file) {
+    app.multiupload.main = file;
+    if (!app.multiupload.thumbnail) app.setThumbnail(file);
+    const parent = app.multiupload.querySelector('.main dd');
+    parent.replaceChildren(document.createTextNode(`name: ${file.name}\ntype: ${file.type}\nsize: ${app.formatBytes(file.size)})`));
+    app.multiupload.querySelector('button[name="submit"]').disabled = false;
+}
+
+/**
+ * Settinf main upload file for modal onchange
+ * @param {event} e 
+ */
+app.changeMainHandler = function (e) {
+    app.setMain(e.target.files[0]);
+}
+
+app.multiupload.querySelector('.main').addEventListener("drop", function(e) {
+    const files = e.dataTransfer.files;
+    if (files.length === 0) return;
+    app.setMain(files[0]);
+});
+app.multiupload.querySelector('.main').addEventListener("click", () => {
+    const input = app.multiupload.querySelector('[name="main"]');
+    input.click();
+    input.addEventListener('change', app.changeMainHandler);
+});
+
+/**
+ * Execute upload from modal
+ */
+app.uploadMultiHandler = function() {
+    const action = () => {
+        app.upload(app.multiupload.main, app.multiupload.thumbnail);
+    }
+    app.execute(action);
+    app.multiupload.close();
+}
+
+app.multiupload.querySelector('button[name="submit"]').addEventListener('click', app.uploadMultiHandler);
+
+/**
+ * Reset modal
+ */
+app.multiupload.reset = function() {
+    app.multiupload.thumbnail = null;
+    app.multiupload.main = null;
+    app.multiupload.querySelector('.main dd').replaceChildren();
+    app.multiupload.querySelector('.thumbnail dd').replaceChildren();
+    app.multiupload.querySelector('button[name="submit"]').disabled = true;
+}
+
+/**
+ * close modal
+ */
+app.multiupload.close = function() {
+    app.multiupload.style.display = 'none';
+}
+
+app.multiupload.querySelector('button[name="close"]').addEventListener('click', app.multiupload.close);
+
+app.querySelector('button[name="multiupload"]').addEventListener('click', () => {
+    app.multiupload.reset();
+    app.multiupload.style.display = 'block';
+});
+
 
 /**
  * Create thumbnail from image or video (using canvas)
@@ -846,7 +955,7 @@ app.authenticateModalKeydownHandler = function(e) {
 
 /* set default event */
 app.querySelector('.authenticate').addEventListener('click', app.authenticateModalCloseHandele);
-app.querySelector('.authenticate .close').addEventListener('click', app.closeAuthenticate);
+app.querySelector('.authenticate button[name="close"]').addEventListener('click', app.closeAuthenticate);
 app.querySelectorAll('.authenticate input').forEach((input) => input.addEventListener('keydown', function(e) {
     if (e.key =='Enter') app.login();
 }));
