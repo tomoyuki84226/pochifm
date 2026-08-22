@@ -435,7 +435,7 @@ app.contextMenu.getElementsByTagName('li')[1].addEventListener('click', app.down
 */
 app.getShare = async function () {
     const item = app.fileListNode.querySelector('.selected');
-    const url = `${setting.orgDir}/?id=${item.data.id}`;
+    const url = `${window.location.origin}/${setting.orgDir}/?id=${item.data.id}`;
     try {
         await navigator.clipboard.writeText(url);
     } catch (err) {
